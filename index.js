@@ -36,23 +36,7 @@ var signature = crypto.createHmac('sha256', secretKey)
 // console.log(signature)
 
 //json object send to MoMo endpoint
-const requestBody = JSON.stringify({
-    partnerCode : partnerCode,
-    partnerName : "Test",
-    storeId : "MomoTestStore",
-    requestId : requestId,
-    amount : amount,
-    orderId : orderId,
-    orderInfo : orderInfo,
-    redirectUrl : redirectUrl,
-    ipnUrl : ipnUrl,
-    lang : lang,
-    requestType: requestType,
-    autoCapture: autoCapture,
-    extraData : extraData,
-    orderGroupId: orderGroupId,
-    signature : signature
-});
+
 //Create the HTTPS objects
 const options = {
     hostname: 'test-payment.momo.vn',
@@ -66,7 +50,23 @@ const options = {
 }
 
 app.post("/payment-momo", (request, response)=> {
-
+    const requestBody = JSON.stringify({
+        partnerCode : partnerCode,
+        partnerName : "Test",
+        storeId : "MomoTestStore",
+        requestId : requestId,
+        amount : amount,
+        orderId : orderId,
+        orderInfo : orderInfo,
+        redirectUrl : redirectUrl,
+        ipnUrl : ipnUrl,
+        lang : lang,
+        requestType: requestType,
+        autoCapture: autoCapture,
+        extraData : extraData,
+        orderGroupId: orderGroupId,
+        signature : signature
+    });
     //Send the request and get the response
     const req = https.request(options, res => {
         console.log(`Status: ${res.statusCode}`);
@@ -74,7 +74,7 @@ app.post("/payment-momo", (request, response)=> {
         res.setEncoding('utf8');
         res.on('data', (body) => {
             console.log('Body: ');
-            response.json(body)
+            response.json(JSON.parse(body))
             console.log('resultCode: ');
             console.log(JSON.parse(body).resultCode);
         });
