@@ -38,16 +38,7 @@ var signature = crypto.createHmac('sha256', secretKey)
 //json object send to MoMo endpoint
 
 //Create the HTTPS objects
-const options = {
-    hostname: 'test-payment.momo.vn',
-    port: 443,
-    path: '/v2/gateway/api/create',
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(requestBody)
-    }
-}
+
 
 app.post("/payment-momo", (request, response)=> {
     const requestBody = JSON.stringify({
@@ -67,6 +58,16 @@ app.post("/payment-momo", (request, response)=> {
         orderGroupId: orderGroupId,
         signature : signature
     });
+    const options = {
+        hostname: 'test-payment.momo.vn',
+        port: 443,
+        path: '/v2/gateway/api/create',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(requestBody)
+        }
+    }
     //Send the request and get the response
     const req = https.request(options, res => {
         console.log(`Status: ${res.statusCode}`);
