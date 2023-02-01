@@ -10,8 +10,8 @@ var accessKey = 'klm05TvNBzhg7h7j';
 var secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
 var orderInfo = 'pay with MoMo';
 var partnerCode = 'MOMOBKUN20180529';
-var redirectUrl = 'https://webhook.site/55e5a535-be72-4e2f-bf5e-0ca957939dcf';
-var ipnUrl = 'https://webhook.site/55e5a535-be72-4e2f-bf5e-0ca957939dcf';
+var redirectUrl = 'http://127.0.0.1:5500/checkout.html';
+var ipnUrl = 'http://127.0.0.1:5500/checkout.html';
 var requestType = "payWithMethod";
 var amount = '50000';   
 var orderId = partnerCode + new Date().getTime();
@@ -48,6 +48,59 @@ app.post("/payment-momo", (request, response)=> {
         requestId : requestId,
         amount : request.body.amount,
         orderId : orderId,
+        orderInfo : orderInfo,
+        redirectUrl : redirectUrl,
+        ipnUrl : ipnUrl,
+        lang : lang,
+        requestType: requestType,
+        autoCapture: autoCapture,
+        extraData : extraData,
+        orderGroupId: orderGroupId,
+        signature : signature
+    });
+    const options = {
+        hostname: 'test-payment.momo.vn',
+        port: 443,
+        path: '/v2/gateway/api/create',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(requestBody)
+        }
+    }
+    //Send the request and get the response
+    const req = https.request(options, res => {
+        console.log(`Status: ${res.statusCode}`);
+        console.log(`Headers: ${JSON.stringify(res.headers)}`);
+        res.setEncoding('utf8');
+        res.on('data', (body) => {
+            console.log('Body: ');
+            response.json(JSON.parse(body))
+            console.log('resultCode: ');
+            console.log(JSON.parse(body).resultCode);
+        });
+        res.on('end', () => {
+            console.log('No more data in response.');
+        });
+    })
+    
+    req.on('error', (e) => {
+        console.log(`problem with request: ${e.message}`);
+    });
+    // write data to request body
+    console.log("Sending....")
+    req.write(requestBody);
+    req.end();
+})
+
+app.post("/payment-status", (request, response)=> {
+    const requestBody = JSON.stringify({
+        partnerCode : partnerCode,
+        // partnerName : "Test",
+        // storeId : "MomoTestStore",
+        requestId : requestId,
+        amount : request.body.amount,
+        orderId : request.body.orderId,
         orderInfo : request.body.orderInfo,
         redirectUrl : redirectUrl,
         ipnUrl : ipnUrl,
@@ -61,7 +114,7 @@ app.post("/payment-momo", (request, response)=> {
     const options = {
         hostname: 'test-payment.momo.vn',
         port: 443,
-        path: '/v2/gateway/api/create',
+        path: '/v2/gateway/api/confirm',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
