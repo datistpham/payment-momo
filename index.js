@@ -46,15 +46,15 @@ app.post("/payment-momo", (request, response)=> {
         partnerName : "Test",
         storeId : "MomoTestStore",
         requestId : requestId,
-        amount : amount,
+        amount : request.body.amount,
         orderId : orderId,
-        orderInfo : orderInfo,
+        orderInfo : request.body.orderInfo,
         redirectUrl : redirectUrl,
         ipnUrl : ipnUrl,
         lang : lang,
         requestType: requestType,
         autoCapture: autoCapture,
-        extraData : extraData,
+        extraData : request.body.extraData,
         orderGroupId: orderGroupId,
         signature : signature
     });
