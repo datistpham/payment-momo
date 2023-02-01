@@ -1,5 +1,7 @@
 const express= require("express")
+const crypto = require('crypto');
 const cors= require("cors")
+const https = require('https');
 const app= express()
 app.use(cors())
 
@@ -24,15 +26,14 @@ var lang = 'vi';
 //accessKey=$accessKey&amount=$amount&extraData=$extraData&ipnUrl=$ipnUrl&orderId=$orderId&orderInfo=$orderInfo&partnerCode=$partnerCode&redirectUrl=$redirectUrl&requestId=$requestId&requestType=$requestType
 var rawSignature = "accessKey=" + accessKey + "&amount=" + amount + "&extraData=" + extraData + "&ipnUrl=" + ipnUrl + "&orderId=" + orderId + "&orderInfo=" + orderInfo + "&partnerCode=" + partnerCode + "&redirectUrl=" + redirectUrl + "&requestId=" + requestId + "&requestType=" + requestType;
 //puts raw signature
-console.log("--------------------RAW SIGNATURE----------------")
-console.log(rawSignature)
+// console.log("--------------------RAW SIGNATURE----------------")
+// console.log(rawSignature)
 //signature
-const crypto = require('crypto');
 var signature = crypto.createHmac('sha256', secretKey)
     .update(rawSignature)
     .digest('hex');
-console.log("--------------------SIGNATURE----------------")
-console.log(signature)
+// console.log("--------------------SIGNATURE----------------")
+// console.log(signature)
 
 //json object send to MoMo endpoint
 const requestBody = JSON.stringify({
@@ -53,7 +54,6 @@ const requestBody = JSON.stringify({
     signature : signature
 });
 //Create the HTTPS objects
-const https = require('https');
 const options = {
     hostname: 'test-payment.momo.vn',
     port: 443,
