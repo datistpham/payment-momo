@@ -37,6 +37,14 @@ var lang = 'vi';
 
 
 app.post("/payment-momo", (request, response)=> {
+    if(request.body.platform== "web") {
+        redirectUrl= "http://127.0.0.1:5500/checkout.html"
+        ipnUrl= "http://127.0.0.1:5500/checkout.html"
+    }
+    else if(request.body.platform== "app") {
+        redirectUrl= request.body.url_app
+        ipnUrl= request.body.url_app
+    }
     var orderId = partnerCode + new Date().getTime();
     var requestId = orderId;
     const {amount }= request.body
