@@ -38,8 +38,8 @@ var lang = 'vi';
 
 app.post("/payment-momo", (request, response)=> {
     if(request.body.platform== "web") {
-        redirectUrl= "http://127.0.0.1:5500/checkout.html"
-        ipnUrl= "http://127.0.0.1:5500/checkout.html"
+        redirectUrl= request.body.url_web
+        ipnUrl= request.body.url_web
     }
     else if(request.body.platform== "app") {
         redirectUrl= request.body.url_app
