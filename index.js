@@ -10,10 +10,10 @@ app.use(express.urlencoded({
     extended: true
 }))
 //parameters
-var accessKey = 'klm05TvNBzhg7h7j';
-var secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
+var accessKey = '5HQwMBjECicRhX9z';
+var secretKey = 'UimSZYO4UPyyTigMN7r7nusST7DaxZ1B';
 var orderInfo = 'pay with MoMo';
-var partnerCode = 'MOMOBKUN20180529';
+var partnerCode = 'MOMO0UGE20220907';
 var redirectUrl = 'http://127.0.0.1:5500/checkout.html';
 var ipnUrl = 'http://127.0.0.1:5500/checkout.html';
 var requestType = "payWithMethod";
