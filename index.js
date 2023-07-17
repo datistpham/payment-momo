@@ -108,30 +108,25 @@ app.post("/payment-momo", (request, response)=> {
     req.write(requestBody);
     req.end();
 })
-
+// 
 app.post("/payment-status", (request, response)=> {
-    console.log(request.body)
+    var requestId= request.body.orderId
+    const {amount, orderId }= request.body
+    var rawSignature = "accessKey=" + accessKey + "&orderId=" + orderId + "&partnerCode=" + partnerCode + "&requestId=" + requestId;
+    var signature = crypto.createHmac('sha256', secretKey)
+    .update(rawSignature)
+    .digest('hex');
     const requestBody = JSON.stringify({
         partnerCode : partnerCode,
-        // partnerName : "Test",
-        // storeId : "MomoTestStore",
-        requestId : requestId,
-        amount : 123,
+        requestId : request.body.orderId,
         orderId : request.body.orderId,
-        orderInfo : request.body.orderInfo,
-        redirectUrl : redirectUrl,
-        ipnUrl : ipnUrl,
-        lang : lang,
-        requestType: requestType,
-        autoCapture: autoCapture,
-        extraData : request.body.extraData,
-        orderGroupId: orderGroupId,
+        lang: lang,
         signature : signature
     });
     const options = {
         hostname: 'test-payment.momo.vn',
         port: 443,
-        path: '/v2/gateway/api/confirm',
+        path: '/v2/gateway/api/query',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -163,4 +158,6 @@ app.post("/payment-status", (request, response)=> {
     req.end();
 })
 
-app.listen(4000, ()=> console.log("Server run on port ..."))
+
+
+app.listen(4001, ()=> console.log("Server run on port ..."))
