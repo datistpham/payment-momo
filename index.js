@@ -14,8 +14,8 @@ var accessKey = 'F8BBA842ECF85';
 var secretKey = 'K951B6PE1waDMi640xX08PD3vg6EkVlz';
 var orderInfo = 'pay with MoMo';
 var partnerCode = 'MOMO';
-var redirectUrl = 'http://127.0.0.1:5500/checkout.html';
-var ipnUrl = 'http://127.0.0.1:5500/checkout.html';
+var redirectUrl = 'http://localhost/checkout.html';
+var ipnUrl = 'http://localhost/checkout.html';
 var requestType = "payWithMethod";
 var amount = '50000';   
 
